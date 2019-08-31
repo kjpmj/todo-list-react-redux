@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
 import { ADD_TODO, COMPLETE_TODO, SET_FILTER, SET_SEARCH, filterType } from '../actions/action';
 const { SHOW_ALL } = filterType;
+let id = 3;
 const todosList = [
-  {text: '집가고싶다.', complete : false},
-  {text: '호로롤', complete : true}
+  {id : 1, text: '집가고싶다.', complete : false},
+  {id : 2, text: '호로롤', complete : true}
 ]
 
 const filter = (state = SHOW_ALL, action) => {
@@ -18,19 +19,19 @@ const filter = (state = SHOW_ALL, action) => {
 const todos = (state=todosList, action) => {
   switch(action.type){
   case ADD_TODO:
-    return [...state, {text: action.text, complete : false}];
+    return [...state, {id : id++, text: action.text, complete : false}];
   case COMPLETE_TODO:
-    return [
-      ...state.slice(0, action.index),
-      {...state[action.index], complete : true},
-      ...state.slice(action.index + 1)
-    ];
+    return state.map(todo => 
+        todo.id === action.id
+          ? {...todo, complete : !todo.complete}
+          : todo
+      )
   default:
     return state;
   }
 }
 
-const search = (state='', action) => {
+const searchText = (state='', action) => {
   switch(action.type){
    case SET_SEARCH:
     return action.searchText;
@@ -42,7 +43,7 @@ const search = (state='', action) => {
 const todoReducer = combineReducers({
   filter,
   todos,
-  search
+  searchText
 });
 
 export default todoReducer;

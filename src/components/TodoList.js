@@ -6,11 +6,10 @@ import Todo from './Todo';
 class TodoList extends Component {
   render() {
     const { todos, onTodoClick } = this.props;
-    console.log(todos);
-    const todoCompoList = todos.map((todo, index )=> 
+    const todoCompoList = todos.map(todo=> 
       <Todo
-        {...todo}
-        key={index}
+        todo={todo}
+        key={todo.id}
         onTodoClick={onTodoClick}
       />
     );
@@ -36,15 +35,17 @@ const getVisibleTodos = (todos, filter) => {
 
 const mapStateToProps = (state) =>{
   return {
-    // todos : getVisibleTodos(state.todos, state.filter)
-    todos : state.todos
+    todos : (() => {
+      const todos = getVisibleTodos(state.todos, state.filter).filter(todo => todo.text.includes(state.searchText));
+      return todos;
+    })() 
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onTodoClick : index => {
-      dispatch(completeTodo(index))
+    onTodoClick : id => {
+      dispatch(completeTodo(id))
     }
   }
 }
