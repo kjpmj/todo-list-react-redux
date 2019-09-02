@@ -9,8 +9,9 @@ class App extends Component {
   render() {
     
     axios.get('/todos')
-      .then((resp)=>{
-        console.log(resp);
+      .then(res => res.data)
+      .then((data)=>{
+        console.log(data);
       });
 
     return (
