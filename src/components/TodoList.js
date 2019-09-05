@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { completeTodo, filterType } from '../actions/action';
+import { completeTodo, filterType, fetchTodoAsync } from '../actions/action';
 import Todo from './Todo';
 
 class TodoList extends Component {
+  componentDidMount() {
+    this.props.onFetchTodo();
+  }
+
   render() {
     const { todos, onTodoClick } = this.props;
     const todoCompoList = todos.map(todo=> 
@@ -46,6 +50,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onTodoClick : id => {
       dispatch(completeTodo(id))
+    },
+    onFetchTodo : () => {
+      dispatch(fetchTodoAsync())
     }
   }
 }

@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux';
-import { ADD_TODO, COMPLETE_TODO, SET_FILTER, SET_SEARCH, filterType } from '../actions/action';
+import { ADD_TODO, COMPLETE_TODO, FETCH_TODO, SET_FILTER, SET_SEARCH, filterType } from '../actions/action';
 const { SHOW_ALL } = filterType;
-let id = 3;
-const todosList = [
-  {id : 1, text: '집가고싶다.', complete : false},
-  {id : 2, text: '호로롤', complete : true}
-]
+let id = 4;
+
+let todosList= [];
 
 const filter = (state = SHOW_ALL, action) => {
   switch(action.type){
@@ -26,6 +24,8 @@ const todos = (state=todosList, action) => {
           ? {...todo, complete : !todo.complete}
           : todo
       )
+  case FETCH_TODO:
+    return action.payload;
   default:
     return state;
   }

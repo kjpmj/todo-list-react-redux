@@ -1,6 +1,9 @@
+import axios from 'axios';
+
 /** 액션 타입 */
 export const ADD_TODO = 'ADD_TODO';
 export const COMPLETE_TODO = 'COMPLETE_TODO';
+export const FETCH_TODO = 'FETCH_TODO';
 export const SET_FILTER = 'SET_FILTER';
 export const SET_SEARCH = 'SET_SEARCH';
 
@@ -18,9 +21,20 @@ export const addTodo = (text) => {
 export const completeTodo = (id) => {
   return {type : COMPLETE_TODO, id}
 }
+export const fetchTodo = (payload) => {
+  return {type : FETCH_TODO, payload}
+}
 export const setFilter = (filter) => {
   return {type : SET_FILTER, filter}
 }
 export const setSearch = (searchText) => {
   return {type : SET_SEARCH, searchText}
+}
+
+/** thunk */
+export const fetchTodoAsync = () => {
+  return (dispatch) => {
+    axios.get('/todos')
+      .then(resp => dispatch(fetchTodo(resp.data)))
+  }
 }
