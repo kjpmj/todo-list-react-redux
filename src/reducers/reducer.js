@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
-import { ADD_TODO, COMPLETE_TODO, FETCH_TODO, SET_FILTER, SET_SEARCH, filterType } from '../actions/action';
+import { ADD_TODO, COMPLETE_TODO, FETCH_TODO, SET_FILTER, SET_SEARCH, filterType, FETCH_START, FETCH_END } from '../actions/action';
 const { SHOW_ALL } = filterType;
-let id = 4;
 
 let todosList= [];
 
@@ -17,9 +16,9 @@ const filter = (state = SHOW_ALL, action) => {
 const todos = (state=todosList, action) => {
   switch(action.type){
   case ADD_TODO:
-    return [...state, {id : id++, text: action.text, complete : false}];
+    return [...state, {text: action.text, complete : false}];
   case COMPLETE_TODO:
-    return state.map(todo => 
+    return state.map(todo =>
         todo.id === action.id
           ? {...todo, complete : !todo.complete}
           : todo
@@ -40,10 +39,22 @@ const searchText = (state='', action) => {
   }
 }
 
+const isFetching = (state=false, action) => {
+  switch(action.type){
+    case FETCH_START:
+      return true;
+    case FETCH_END:
+      return false;
+  default:
+    return state;
+  }
+}
+
 const todoReducer = combineReducers({
   filter,
   todos,
-  searchText
+  searchText,
+  isFetching
 });
 
 export default todoReducer;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addTodo } from '../actions/action';
+import { addTodoAsync } from '../actions/action';
 
 class AddTodoForm extends Component {
   handleAddBtnClick = () => {
@@ -28,7 +28,7 @@ class AddTodoForm extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     onAddBtnClick : text => {
-      dispatch(addTodo(text))
+      dispatch(addTodoAsync(text))
     }
   }
 }
